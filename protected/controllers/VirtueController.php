@@ -32,7 +32,7 @@ class VirtueController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','download'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -201,5 +201,39 @@ class VirtueController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function actionDownload()
+	{
+
+   	Yii::Import('application.extensions.ExportXLS.ExportXLS');
+	 
+	// Xls Header Row
+	$headercolums =array('Species Name', 'Herbal Part','Virtue Type','Virtue','Variety(English)','Variety(Latin)', 'Reference'); 
+	
+	// Xls Data
+
+	$criteria = new CDbCriteria;
+	$criteria->with = array('ref','species', 'herbal_part');
+	$criteria->select = 'herbal_part.hp_part_name as hp_part, vir_type, vir_value, vir_value_en, vir_value_latin, ref.ref_name as refs, species.spe_speciesname as speciesnames'; // select fields which you want in output
+
+	$data = Virtue::model()->findAll($criteria);
+    // var_dump($data);die();
+	$row = array();
+	foreach ($data as $d) {
+		$item = array($d->species['spe_speciesname'], $d->herbal_part['hp_part_name'], $d->vir_type, $d->vir_value, $d->vir_value_en, $d->vir_value_latin, $d->ref['ref_name']);
+		array_push($row, $item);
+		
+	}
+	// var_dump($row);die();
+	// $row=array(array('Sachin','35'),array('sehwag',30));
+	 
+	// Xls File Name
+	$filename = 'Virtue.xls';
+	    $xls      = new ExportXLS($filename);
+	    $header = null;
+	    $xls->addHeader($headercolums);
+	    $xls->addRow($row);
+	    $xls->sendFile();
 	}
 }

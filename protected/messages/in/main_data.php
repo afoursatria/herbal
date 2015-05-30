@@ -145,8 +145,8 @@
         Malaysia, Thailand, dan Filipina.',
         'Avocado plants native to Mexico and Central America and is now widely cultivated in South America and Central 
         America as plant monocultures and as garden plants in other tropical areas in the world.'=>
-        'Tumbuhan Alpukat berasal dari Meksiko dan Amerika Tengah dan kini banyak dibudidayakan di Amerika Selatan dan Amerika Tengah sebagai tanaman perkebunan monokultur dan sebagai tanaman pekarangan di daerah-daerah tropika lainnya di dunia.'
-
+        'Tumbuhan Alpukat berasal dari Meksiko dan Amerika Tengah dan kini banyak dibudidayakan di Amerika Selatan dan Amerika Tengah sebagai tanaman perkebunan monokultur dan sebagai tanaman pekarangan di daerah-daerah tropika lainnya di dunia.',
+       'Download Data'=>'Unduh Data',
 	);
 
 ?>

@@ -18,5 +18,6 @@ return array(
 'Submit'=>'Kirim',
 'Profile'=>'Profil',
 'Register'=>'Daftar',
+'Download Data'=> 'Unduh Data',
 );
 ?>

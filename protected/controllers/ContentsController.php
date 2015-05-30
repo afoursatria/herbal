@@ -32,7 +32,7 @@ class ContentsController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','findContentName'),
+				'actions'=>array('create','update','findContentName', 'download'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -293,4 +293,35 @@ class ContentsController extends Controller
            }
        }
    }
+
+	public function actionDownload()
+	{
+
+   	Yii::Import('application.extensions.ExportXLS.ExportXLS');
+	 
+	// Xls Header Row
+	$headercolums =array('Compound Name','Knapsack ID', 'Metabolite ID', 'Pubchem ID', 'Source'); 
+	
+	// Xls Data
+	$criteria = new CDbCriteria;
+	$criteria->select = 'con_contentname, con_knapsack_id, con_metabolite_id, con_pubchem_id, con_source'; // select fields which you want in output
+
+	$data = Contents::model()->findAll($criteria);
+	$row = array();
+	foreach ($data as $d) {
+		$item = array($d->con_contentname, $d->con_knapsack_id, $d->con_metabolite_id, $d->con_pubchem_id, $d->con_source);
+		array_push($row, $item);
+		
+	}
+	// var_dump($row);die();
+	// $row=array(array('Sachin','35'),array('sehwag',30));
+	 
+	// Xls File Name
+	$filename = 'Compound.xls';
+	    $xls      = new ExportXLS($filename);
+	    $header = null;
+	    $xls->addHeader($headercolums);
+	    $xls->addRow($row);
+	    $xls->sendFile();
+	}
 }

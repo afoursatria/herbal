@@ -32,7 +32,7 @@ class LocalnameController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update', 'download'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -217,5 +217,43 @@ class LocalnameController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function actionDownload()
+	{
+
+   	Yii::Import('application.extensions.ExportXLS.ExportXLS');
+	 
+	// Xls Header Row
+	$headercolums =array('Species Name', 'Local Name','Region','Reference'); 
+	
+	// Xls Data
+	// $localname = Localname::model()
+ //     ->with('ref')
+ //     ->findAll(array(
+	// 	'select'=> array('loc_localname','ref_name')           
+	      // ));
+	$criteria = new CDbCriteria;
+	$criteria->with = array('ref','species');
+	$criteria->select = 'loc_localname, loc_region, ref.ref_name as refs, species.spe_speciesname as speciesnames'; // select fields which you want in output
+
+	$data = Localname::model()->findAll($criteria);
+    // var_dump($data);die();
+	$row = array();
+	foreach ($data as $d) {
+		$item = array($d->species['spe_speciesname'], $d->loc_localname, $d->loc_region, $d->ref['ref_name']);
+		array_push($row, $item);
+		
+	}
+	// var_dump($row);die();
+	// $row=array(array('Sachin','35'),array('sehwag',30));
+	 
+	// Xls File Name
+	$filename = 'Localname.xls';
+	    $xls      = new ExportXLS($filename);
+	    $header = null;
+	    $xls->addHeader($headercolums);
+	    $xls->addRow($row);
+	    $xls->sendFile();
 	}
 }

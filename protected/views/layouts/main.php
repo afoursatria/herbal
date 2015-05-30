@@ -45,6 +45,7 @@
 				'items'=>array(
 					array('label'=>'<span class="glyphicon glyphicon-home"></span> '.Yii::t('main_layout', 'Home'), 'url'=>array('/site/index'),'itemCssClass'=>'text text-40'),
 					array('label'=>'<span class="glyphicon glyphicon-search"></span> '.Yii::t('main_layout','Search'),'url'=>array('species/search'),'linkOptions'=>array('id'=>'searchbar')),
+					array('label'=>'<span class="glyphicon glyphicon-download"></span> '.Yii::t('main_layout','Download Data'),'url'=>array('/user/download'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'<span class="glyphicon glyphicon-plus"></span> '.Yii::t('main_layout', 'Insert Data'), 'url'=>array('/user/insertData'), 'visible'=>!Yii::app()->user->isGuest), 
 					array('label'=>'<span class="glyphicon glyphicon-user"></span> '.Yii::t('main_layout', 'User Management'), 'url'=>array('/user/admin'), 'visible'=>!Yii::app()->user->isGuest && Yii::app()->user->getState("role")==1), 
 				// array('label'=>'List of Species', 'url'=>array('/species/index')),

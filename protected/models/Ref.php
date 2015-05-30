@@ -50,7 +50,7 @@ class Ref extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'ref' => array(self::BELONGS_TO, 'ref_id', 'ref_name'),
-			// 'ref_local'=>array(self::HAS_MANY, 'Localname', 'ref_id'),
+			'localname'=>array(self::HAS_MANY, 'Localname', 'ref_id'),
 		);
 	}
 

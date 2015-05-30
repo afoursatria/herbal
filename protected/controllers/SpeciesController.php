@@ -32,7 +32,7 @@ class SpeciesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','findSpeciesName'),
+				'actions'=>array('create','update','findSpeciesName','download'),
 				'users'=>array('@'),
 				// 'expression'=>'allowContributor,allowExpert',
 			),
@@ -384,4 +384,34 @@ class SpeciesController extends Controller
            }
        }
    }
+
+   public function actionDownload()
+   {
+   	Yii::Import('application.extensions.ExportXLS.ExportXLS');
+	 
+	// Xls Header Row
+	$headercolums =array('Species ID','Species Name', 'Variety Name', 'Family Name', 'Founder Name'); 
+	
+	// Xls Data
+	$criteria = new CDbCriteria;
+	$criteria->select = 'spe_species_id, spe_speciesname, spe_varietyname, spe_familyname, spe_foundername'; // select fields which you want in output
+
+	$data = Species::model()->findAll($criteria);
+	$row = array();
+	foreach ($data as $d) {
+		$item = array($d->spe_species_id, $d->spe_speciesname, $d->spe_varietyname, $d->spe_familyname, $d->spe_foundername);
+		array_push($row, $item);
+		
+	}
+		// var_dump($row);die();
+	// $row=array(array('Sachin','35'),array('sehwag',30));
+	 
+	// Xls File Name
+	$filename = 'Species.xls';
+	    $xls      = new ExportXLS($filename);
+	    $header = null;
+	    $xls->addHeader($headercolums);
+	    $xls->addRow($row);
+	    $xls->sendFile();
+	}
 }

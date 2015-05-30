@@ -44,7 +44,7 @@ class UserController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-			 	'actions'=>array('create','profile', 'update', 'changePassword', 'insertData', 'captcha', 'findRefName'),
+			 	'actions'=>array('create','profile', 'update', 'changePassword', 'insertData', 'captcha', 'findRefName', 'download'),
 			 	'users'=>array('@'),		
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -398,6 +398,11 @@ class UserController extends Controller
                Yii::app()->end();
            }
        }
+   }
+
+   public function actionDownload()
+   {
+   	$this->render('download');
    }
 
  //   public function loadModel() {

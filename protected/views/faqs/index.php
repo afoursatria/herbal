@@ -35,7 +35,7 @@ if (Yii::app()->user->getState("role") == 1)
 <br />
 <h1 class="text-center">Faqs</h1>
 <div class="row">
-	<?php echo $faqs->faqs_content; ?>
+	<?php if ($faqs) echo $faqs->faqs_content; ?>
 </div>
 
 <?php 

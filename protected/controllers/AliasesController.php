@@ -32,7 +32,7 @@ class AliasesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','download'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -199,5 +199,39 @@ class AliasesController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function actionDownload()
+	{
+
+   	Yii::Import('application.extensions.ExportXLS.ExportXLS');
+	 
+	// Xls Header Row
+	$headercolums =array('Species Name', 'Alias Name','Founder Name','Variety Name','Reference'); 
+	
+	// Xls Data
+
+	$criteria = new CDbCriteria;
+	$criteria->with = array('ref','species');
+	$criteria->select = 'ali_speciesname, ali_foundername, ali_varietyname, ref.ref_name as refs, species.spe_speciesname as speciesnames'; // select fields which you want in output
+
+	$data = Aliases::model()->findAll($criteria);
+    // var_dump($data);die();
+	$row = array();
+	foreach ($data as $d) {
+		$item = array($d->species['spe_speciesname'], $d->ali_speciesname, $d->ali_foundername, $d->ali_varietyname, $d->ref['ref_name']);
+		array_push($row, $item);
+		
+	}
+	// var_dump($row);die();
+	// $row=array(array('Sachin','35'),array('sehwag',30));
+	 
+	// Xls File Name
+	$filename = 'Alias.xls';
+	    $xls      = new ExportXLS($filename);
+	    $header = null;
+	    $xls->addHeader($headercolums);
+	    $xls->addRow($row);
+	    $xls->sendFile();
 	}
 }

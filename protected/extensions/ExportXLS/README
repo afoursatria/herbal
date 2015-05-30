@@ -1,0 +1,18 @@
+A light weight PHP class allow to the creation of simple xls spreadsheets from array data.
+
+Usage:
+
+
+// Xls Header Row
+	$headercolums =array('Name','age'); 
+	
+// Xls Data
+$row=array(array('Sachin','35'),array('sehwag',30));
+	
+// Xls File Name
+$filename = 'fileName.xls';
+	$xls 	  = new ExportXLS($filename);
+	$header = null;
+	$xls->addHeader($headercolums);
+	$xls->addRow($row);
+	$xls->sendFile();   

@@ -52,7 +52,7 @@ class Localname extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'ref' => array(self::BELONGS_TO, 'Ref', 'ref_id'), //ref id foreign fro re_id
+			'ref' => array(self::BELONGS_TO, 'Ref', 'ref_id'), //ref id foreign from ref_id
 			'species'=>array(self::BELONGS_TO, 'Species','spe_id'),
 		);
 	}
